@@ -1,168 +1,175 @@
 ---
 name: project-skeletonization
-description: 将完整业务项目改造为通用基础项目骨架的协作式工作流。适用于用户要求“去掉业务功能/业务页面/业务模块”“保留基础框架/通用组件/鉴权/部署能力”“把 Spring Boot、Vue、Node.js、Python、React、Django、FastAPI、Express 等完整项目抽象成 starter/skeleton/template”的场景。使用时必须先盘点项目、提出保留/删除方案、列出不确定项让用户决策，得到用户确认后再执行改造。
+description: Collaborative workflow for converting a complete business project into a reusable base skeleton. Use when the user asks to remove business features, pages, or modules; keep base framework capabilities such as common components, authentication, and deployment; or turn Spring Boot, Vue, Node.js, Python, React, Django, FastAPI, Express, or similar projects into a starter, skeleton, or template. Before modifying code, inventory the project, propose keep/remove decisions, list uncertain items, and wait for user confirmation.
 ---
 
-# 项目骨架化改造
+# Project Skeletonization
 
-## 目标
+## Goal
 
-把一个已有的完整业务项目，改造成可复用的基础项目骨架。骨架应能独立运行，保留通用工程能力，删除具体业务功能，并提供最小占位页面/接口/任务来证明框架链路正常。
+Convert an existing complete business project into a reusable base skeleton. The skeleton should run independently, keep common engineering capabilities, remove concrete business features, and provide minimal placeholder pages, APIs, or tasks to prove that the framework path still works.
 
-这个技能强调“协作式改造”：不要擅自大规模删除或重构。凡是模块归属不明确、保留策略不确定、会影响用户后续复用方向的决策，都先让用户确认。
+This skill is collaborative. Do not perform large deletions or refactors without confirmation. If module ownership, retention policy, or future reuse direction is unclear, ask the user first.
 
-## 基本原则
+## Principles
 
-- 先理解，再设计，再执行。不要一上来改代码。
-- 保留通用能力，删除业务能力。
-- 删除要有证据：先列出为什么是业务模块，再删除。
-- 不确定就问用户，不用猜。
-- 优先让骨架“能启动、能构建、能联调”，再考虑美化或增强。
-- 不引入新技术栈，除非用户明确要求或现有项目无法满足骨架目标。
-- 不破坏用户未要求删除的配置、脚本和部署入口；如果它们含业务内容，先提出改造方案。
-- 对不同技术栈使用同一流程，但判断标准要贴合项目本身。
+- Understand first, design second, modify third.
+- Keep common capabilities and remove business capabilities.
+- Delete with evidence: explain why a module is business-specific before deleting it.
+- Ask when uncertain.
+- Prioritize a skeleton that can start, build, and integrate before polish.
+- Do not introduce a new technology stack unless the user explicitly asks or the existing project cannot meet the skeleton goal.
+- Preserve configurations, scripts, and deployment entry points that the user did not ask to remove. If they contain business content, propose a transformation plan first.
+- Use the same workflow across technology stacks, but judge modules according to the actual project.
 
-## 强制沟通门禁
+## Mandatory Confirmation Gate
 
-在执行任何破坏性改造前，必须向用户输出并等待确认：
+Before any destructive transformation, output the following and wait for user confirmation:
 
-1. 项目盘点摘要：前端、后端、脚本、部署、数据库、测试、文档等结构。
-2. 建议保留清单：通用基础能力，例如鉴权、路由、布局、配置、日志、异常处理、健康检查、CI/CD、Docker、基础组件、脚手架配置。
-3. 建议删除清单：业务页面、业务接口、业务模型、业务数据库迁移、业务文档、业务测试数据、旧构建产物。
-4. 不确定项清单：例如文件上传、审计日志、通知、定时任务、权限模型、数据库/ORM、缓存、消息队列、对象存储、监控埋点。
-5. 端口、包名、项目名、占位功能、是否保留数据库、是否保留认证等关键选项。
+1. Project inventory summary: frontend, backend, scripts, deployment, database, tests, documents, and other major areas.
+2. Proposed keep list: common base capabilities such as authentication, routing, layout, configuration, logging, exception handling, health checks, CI/CD, Docker, base components, and scaffolding configuration.
+3. Proposed remove list: business pages, APIs, models, migrations, documents, test data, and old build artifacts.
+4. Uncertain items: file upload, audit logs, notifications, scheduled jobs, permission model, database/ORM, cache, message queue, object storage, monitoring, and similar modules.
+5. Key options: ports, package names, project name, placeholder behavior, whether to keep the database, whether to keep authentication, and related choices.
 
-只有在用户确认后，才开始改造。用户已经明确确认的事项不用反复确认；新发现的边界问题仍需单独确认。
+Do not start the transformation until the user confirms. Previously confirmed items do not need repeated confirmation, but newly discovered boundary issues still require separate confirmation.
 
-## 工作流程
+## Workflow
 
-### 1. 盘点项目
+### 1. Inventory the Project
 
-读取项目结构和关键文件：
+Read the project structure and key files:
 
-- 根目录：README、构建脚本、Docker、CI/CD、环境变量示例。
-- 前端：`package.json`、路由、入口文件、API 客户端、状态管理、布局、组件、页面目录。
-- 后端：构建文件、入口类/入口脚本、路由/控制器、服务、模型/实体、配置、认证中间件、测试。
-- Python：`pyproject.toml`、`requirements.txt`、`setup.py`、`app/`、`src/`、路由、ORM、配置。
-- Node.js：`package.json`、`src/`、路由、中间件、服务、模型、测试、构建脚本。
-- 数据库：migration、schema、seed、ORM model、连接配置。
-- 部署：Dockerfile、compose、nginx、k8s、PM2、supervisor、systemd。
+- Root: README, build scripts, Docker, CI/CD, environment examples.
+- Frontend: `package.json`, routes, entry files, API clients, state management, layouts, components, pages.
+- Backend: build files, entry class or script, routes/controllers, services, models/entities, configuration, authentication middleware, tests.
+- Python: `pyproject.toml`, `requirements.txt`, `setup.py`, `app/`, `src/`, routes, ORM, configuration.
+- Node.js: `package.json`, `src/`, routes, middleware, services, models, tests, build scripts.
+- Database: migrations, schema, seed data, ORM models, connection configuration.
+- Deployment: Dockerfile, compose, nginx, Kubernetes, PM2, supervisor, systemd.
 
-使用快速搜索识别业务痕迹：业务名、表名、领域词、页面路径、接口路径、旧端口、旧项目名、旧镜像名。
+Use fast search to identify business traces: business names, table names, domain terms, page paths, API paths, old ports, old project names, and old image names.
 
-### 2. 分类模块
+### 2. Classify Modules
 
-把模块分成三类：
+Classify modules into three groups.
 
-**保留**
-- 鉴权/登录/会话/权限框架。
-- 通用布局、路由守卫、基础组件、请求封装、状态管理。
-- 统一响应、异常处理、日志、健康检查、配置加载。
-- OpenAPI/Swagger、测试框架、构建配置。
-- Docker、nginx、compose、CI/CD 等部署骨架。
+**Keep**
 
-**删除**
-- 具体业务页面、业务菜单、业务接口、业务服务。
-- 业务实体、DTO、Repository、ORM model、数据库迁移、seed。
-- 业务报表、导入导出、流程同步、业务定时任务。
-- 旧业务文档、旧构建产物、旧静态产物。
+- Authentication, login, sessions, and permission framework.
+- Common layout, route guards, base components, request wrapper, state management.
+- Unified response, exception handling, logging, health checks, configuration loading.
+- OpenAPI/Swagger, test framework, build configuration.
+- Docker, nginx, compose, CI/CD, and other deployment skeletons.
 
-**待确认**
-- 审计日志、文件上传、通知、缓存、消息队列、数据库/ORM、多租户、权限菜单、对象存储、任务调度、监控。
-- 这些可能是通用能力，也可能深度绑定业务。先说明利弊，再让用户选。
+**Remove**
 
-### 3. 提出骨架设计
+- Concrete business pages, menus, APIs, and services.
+- Business entities, DTOs, repositories, ORM models, migrations, and seed data.
+- Business reports, imports/exports, process sync, and business scheduled tasks.
+- Old business documents, old build outputs, and old static outputs.
 
-在用户确认前，输出简洁设计：
+**Needs confirmation**
 
-- 骨架名称、包名/模块名、端口。
-- 保留的通用能力。
-- 删除的业务范围。
-- 新增占位能力：页面、接口、CLI 命令或测试任务。
-- 验证方式：构建、测试、启动、联调。
-- 风险：例如外部 SSO 依赖、缺失本地运行环境、Maven wrapper 缺文件、npm audit 风险。
+- Audit logs, file uploads, notifications, cache, message queue, database/ORM, multi-tenancy, permission menus, object storage, scheduled jobs, and monitoring.
+- These may be common capabilities or may be deeply tied to business logic. Explain the tradeoff and ask the user.
 
-推荐占位能力：
+### 3. Propose the Skeleton Design
 
-- Web 前端：登录后首页/占位页，调用后端占位接口。
-- 后端 API：`/health` 公开健康检查，`/placeholder/status` 或同等接口验证鉴权和 API 链路。
-- CLI/库项目：保留一个 `hello/status` 命令或最小函数，并配套测试。
-- Python Web：FastAPI/Django/Flask 提供健康检查和受保护占位路由。
-- Node.js Web：Express/Nest/Koa 提供健康检查和受保护占位路由。
+Before confirmation, provide a concise design:
 
-### 4. 分阶段改造
+- Skeleton name, package/module name, and port.
+- Common capabilities to keep.
+- Business scope to remove.
+- Placeholder capability to add: page, API, CLI command, or test task.
+- Verification method: build, test, startup, or integration check.
+- Risks: external SSO dependency, missing local runtime, missing Maven wrapper, npm audit findings, and similar issues.
 
-按低风险到高风险推进：
+Recommended placeholders:
 
-1. 先补占位测试或最小验证。
-2. 清理业务路由和菜单。
-3. 清理业务服务、模型、数据库、DTO、测试数据。
-4. 清理业务依赖和配置。
-5. 更新项目名、端口、Docker、README、环境变量示例。
-6. 添加占位页面/接口/命令。
-7. 扫描旧业务关键词和旧端口残留。
-8. 运行测试、构建、启动验证。
+- Web frontend: a post-login home or placeholder page that calls a backend placeholder API.
+- Backend API: public `/health` plus `/placeholder/status` or an equivalent endpoint to verify authentication and API wiring.
+- CLI/library project: a minimal `hello/status` command or function with tests.
+- Python web: FastAPI/Django/Flask health check and protected placeholder route.
+- Node.js web: Express/Nest/Koa health check and protected placeholder route.
 
-删除文件时遵守当前代理的文件编辑和安全规则。不要使用危险命令批量删除未确认路径。对构建产物、缓存、`dist`、`target`、`node_modules` 等目录，按用户目标和项目习惯处理。
+### 4. Transform in Stages
 
-### 5. 技术栈判断要点
+Proceed from low risk to high risk:
+
+1. Add placeholder tests or minimal verification first.
+2. Clean business routes and menus.
+3. Clean business services, models, database artifacts, DTOs, and test data.
+4. Clean business dependencies and configuration.
+5. Update project name, port, Docker, README, and environment examples.
+6. Add placeholder pages, APIs, or commands.
+7. Scan for old business keywords and old port remnants.
+8. Run tests, builds, and startup verification.
+
+Follow the active agent's file editing and safety rules when deleting files. Do not use dangerous bulk deletes against unconfirmed paths. Handle build outputs, caches, `dist`, `target`, and `node_modules` according to the user's goal and the project's conventions.
+
+## Stack-Specific Notes
 
 **Spring Boot / Java**
-- 删除业务 controller/service/entity/repository/dto。
-- 如果用户选择无数据库骨架，移除 JPA、数据库驱动、datasource、migration。
-- 保留统一响应、异常处理、配置、鉴权、OpenAPI、健康检查。
+
+- Remove business controllers, services, entities, repositories, and DTOs.
+- If the user chooses a no-database skeleton, remove JPA, database drivers, datasource configuration, and migrations.
+- Keep unified response, exception handling, configuration, authentication, OpenAPI, and health checks.
 
 **Node.js / TypeScript**
-- 删除业务 routes/controllers/services/models。
-- 根据用户选择保留或移除 ORM，例如 Prisma、TypeORM、Sequelize、Mongoose。
-- 保留中间件、配置、日志、测试、基础请求/响应约定。
+
+- Remove business routes, controllers, services, and models.
+- Keep or remove ORM tools such as Prisma, TypeORM, Sequelize, or Mongoose according to user choice.
+- Keep middleware, configuration, logging, tests, and base request/response conventions.
 
 **Python**
-- 删除业务 app、router、schema、model、migration、任务。
-- 根据用户选择保留或移除 SQLAlchemy、Django ORM、Alembic、Celery。
-- 保留配置、日志、异常处理、健康检查、测试框架。
 
-**前端项目**
-- 删除业务页面、菜单、API 模块、业务 store、业务常量。
-- 保留入口、路由、布局、基础组件、请求封装、鉴权守卫、样式主题。
-- 新增占位页，展示登录态和接口联通状态。
+- Remove business apps, routers, schemas, models, migrations, and tasks.
+- Keep or remove SQLAlchemy, Django ORM, Alembic, or Celery according to user choice.
+- Keep configuration, logging, exception handling, health checks, and test framework.
 
-## 用户确认问题模板
+**Frontend**
 
-需要确认时，优先问少量关键问题：
+- Remove business pages, menus, API modules, business stores, and business constants.
+- Keep entry files, routing, layout, base components, request wrapper, authentication guards, and theme styles.
+- Add a placeholder page that shows login state and API connectivity.
 
-- 数据库/ORM 是否保留？选项：删除、保留配置但无业务表、保留通用表。
-- 鉴权是否保留？是否要求占位接口也必须登录？
-- 文件上传/审计日志/通知/定时任务属于通用能力还是删除？
-- 端口、项目名、包名、Docker 镜像名是否有指定？
-- 骨架是否要保留多模块结构，还是收敛成最小结构？
+## Confirmation Questions
 
-不要一次抛出过多问题。先问会影响大方向的问题，执行中遇到新边界再问。
+When confirmation is needed, ask only a few key questions first:
 
-## 验证清单
+- Should the database/ORM be removed, kept as configuration only, or kept with common tables?
+- Should authentication be kept, and should the placeholder API require login?
+- Are file upload, audit logs, notifications, and scheduled jobs common capabilities or business features to remove?
+- Are the port, project name, package name, and Docker image name specified?
+- Should the skeleton keep the multi-module structure or converge to a minimal structure?
 
-完成前必须验证并报告结果：
+Avoid asking too many questions at once. Ask questions that affect the overall direction first, then ask about new boundary issues as they appear.
 
-- 构建命令是否通过。
-- 测试命令是否通过。
-- 本地服务是否能启动。
-- 健康检查是否返回成功。
-- 受保护占位接口是否按设计要求登录或返回 401。
-- 前端占位页是否能加载，并在未登录时触发登录守卫。
-- 旧业务关键词、旧端口、旧项目名是否仍有残留。
+## Verification Checklist
 
-如果某项无法验证，说明原因和替代证据。不要把未验证事项描述为已完成。
+Before completion, verify and report:
 
-## 交付说明
+- Whether the build command passed.
+- Whether the test command passed.
+- Whether the local service can start.
+- Whether the health check succeeds.
+- Whether the protected placeholder API requires login or returns 401 as designed.
+- Whether the frontend placeholder page loads and triggers login guard when unauthenticated.
+- Whether old business keywords, old ports, and old project names remain.
 
-最终回复包括：
+If something cannot be verified, explain why and provide alternative evidence. Do not describe unverified items as completed.
 
-- 改造范围摘要。
-- 保留了哪些通用能力。
-- 删除了哪些业务能力。
-- 新端口和启动方式。
-- 占位页面/接口位置。
-- 验证命令和结果。
-- 仍需用户关注的事项，例如外部登录系统、密钥、audit 警告、缺失 wrapper。
+## Final Delivery
 
-不要输出冗长文件清单，除非用户要求。
+The final response should include:
+
+- Transformation scope summary.
+- Common capabilities kept.
+- Business capabilities removed.
+- New ports and startup method.
+- Placeholder page/API locations.
+- Verification commands and results.
+- Remaining user concerns, such as external login systems, secrets, audit warnings, or missing wrappers.
+
+Do not output a long file list unless the user asks for it.

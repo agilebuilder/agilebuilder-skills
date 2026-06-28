@@ -1,27 +1,33 @@
 # AgileBuilder Skills
 
-本仓库收录与AgileBuilder产品相关的 AI Agent Skills，用于增强 AI 在 AgileBuilder 生态下的项目创建、模板交付与项目改造能力。
+[Chinese](README.zh-CN.md)
 
-## 使用方式
+This repository contains AI Agent Skills for the AgileBuilder ecosystem. These skills help agents create projects from templates, follow AgileBuilder delivery constraints, and transform existing business projects into reusable starter skeletons.
 
-将本仓库中的 `skills/` 目录配置到支持 Skills 的 AI Agent 工具中。每个子目录都是一个独立 Skill，入口文件统一为 `SKILL.md`。
+## Usage
 
-## 前置条件
+Configure the repository's `skills/` directory in an AI Agent tool that supports Skills. Each subdirectory is an independent skill, and each skill uses `SKILL.md` as its entry file.
 
-- 使用 `agilebuilder-template-delivery` 前，需要先在当前 Agent 环境中启用 AgileBuilder MCP。
-- Agent 应能读取 AgileBuilder MCP 暴露的 `agilebuilder://usage/agent-policy`、`agilebuilder://usage/guide`、`agilebuilder://docs/catalog` 等资源。
-- 如果 AgileBuilder MCP 不可用，相关 Skill 应明确告知用户原因，再按本地仓库约束继续处理可完成的部分。
+## Prerequisites
 
-## 包含的 Skills
+- `agilebuilder-template-delivery` requires AgileBuilder MCP to be enabled in the active agent environment.
+- The agent should be able to read AgileBuilder MCP resources such as `agilebuilder://usage/agent-policy`, `agilebuilder://usage/guide`, and `agilebuilder://docs/catalog`.
+- If AgileBuilder MCP is unavailable, the relevant skill should clearly tell the user why, then continue only with the parts that can be completed under local repository constraints.
 
-| Skill | 说明 | 典型触发语 |
+## Included Skills
+
+| Skill | Description | Typical Triggers |
 |---|---|---|
-| [`agilebuilder-template-delivery`](skills/agilebuilder-template-delivery) | 优先使用 AgileBuilder MCP 模板创建项目，并在编码前读取 AgileBuilder 文档约束 | "帮我创建一个 Spring Boot 项目"、"按 AgileBuilder 模板初始化仓库" |
-| [`project-skeletonization`](skills/project-skeletonization) | 将完整业务项目改造为可复用的基础项目骨架，保留通用能力、删除业务功能 | "把这个项目改成 skeleton"、"去掉业务功能保留基础框架" |
+| [`agilebuilder-template-delivery`](skills/agilebuilder-template-delivery) | Prefer AgileBuilder MCP templates for project creation, and read AgileBuilder document constraints before coding. | "Create a Spring Boot project", "Initialize a repository from an AgileBuilder template" |
+| [`project-skeletonization`](skills/project-skeletonization) | Convert a full business project into a reusable starter skeleton while keeping common capabilities and removing business features. | "Turn this project into a skeleton", "Remove business features and keep the base framework" |
 
-## 发布前检查
+## Contributing
 
-见 [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md)。
+This repository is English-first. `SKILL.md` files are written in English, `README.md` is the primary English documentation, and `README.zh-CN.md` is the Chinese documentation. Update both README files when skill behavior or user-facing guidance changes. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Release Checklist
+
+See [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md).
 
 ## License
 

@@ -1,55 +1,55 @@
 # project-skeletonization
 
-将完整业务项目改造为可复用的基础项目骨架（skeleton / starter / template）。
+[Chinese](README.zh-CN.md)
 
-## 适用场景
+Convert a complete business project into a reusable base skeleton, starter, or template.
 
-- 历史业务项目需要抽象成通用基础框架；
-- 需要保留鉴权、路由、布局、部署等通用能力，删除具体业务功能；
-- 希望 AI 在改造前与用户充分确认保留/删除边界，避免误删关键代码。
+## Use Cases
 
-## 触发方式
+- Turn a legacy business project into a general-purpose base framework.
+- Keep common capabilities such as authentication, routing, layout, and deployment while removing specific business features.
+- Require the agent to confirm keep/remove boundaries with the user before destructive changes.
 
-在支持 skills 的 AI 工具中，使用以下方式触发：
+## Triggers
 
-- **自然语言**：
-  - "帮我把这个项目改成 skeleton"
-  - "去掉业务功能，保留基础框架"
-  - "把这个 Spring Boot 项目抽象成 starter"
+In AI tools that support skills, trigger this skill with natural language such as:
 
-- **显式调用**（部分平台支持）：
-  - `$project-skeletonization`
-  - `/project-skeletonization`
+- "Turn this project into a skeleton."
+- "Remove business features and keep the base framework."
+- "Convert this Spring Boot project into a starter."
 
-## 主要能力
+Some platforms may also support explicit triggers:
 
-1. **项目盘点**：梳理前端、后端、数据库、部署、测试、文档等结构；
-2. **模块分类**：将模块划分为保留、删除、待确认三类；
-3. **协作式改造**：在执行任何破坏性操作前，输出方案并等待用户确认；
-4. **占位验证**：添加最小占位页面/接口/命令，确保骨架能启动、能构建、能联调。
+- `$project-skeletonization`
+- `/project-skeletonization`
 
-## 使用示例
+## Capabilities
 
-### 示例 1：业务项目骨架化
+1. **Project inventory**: inspect frontend, backend, database, deployment, tests, and documents.
+2. **Module classification**: classify modules as keep, remove, or needs confirmation.
+3. **Collaborative transformation**: output a plan and wait for user confirmation before destructive changes.
+4. **Placeholder verification**: add a minimal placeholder page, API, or command so the skeleton can start, build, and prove the integration path works.
 
+## Example
+
+```text
+User: Convert this e-commerce admin project into a reusable base skeleton.
+
+Agent:
+1. Inspect the project structure: Vue frontend, Spring Boot backend, MySQL, and Docker.
+2. List what to keep: login, route guards, unified response, exception handling, Docker deployment.
+3. List what to remove: product management, order management, payment APIs, and other business modules.
+4. List uncertain items: audit logs, file uploads, scheduled tasks.
+5. Wait for user confirmation.
+6. Apply the confirmed transformation and verify the result.
 ```
-用户：把这个电商后台项目改成可复用的基础骨架。
 
-AI：
-1. 盘点项目结构（Vue 前端 + Spring Boot 后端 + MySQL + Docker）
-2. 列出保留清单：登录鉴权、路由守卫、统一响应、异常处理、Docker 部署
-3. 列出删除清单：商品管理、订单管理、支付接口等业务模块
-4. 列出待确认项：审计日志、文件上传、定时任务
-5. 等待用户确认
-6. 按确认后的方案执行改造并验证
-```
+## Supported Stacks
 
-## 支持的技术栈
+Spring Boot / Java, Node.js / TypeScript, Python with Django / FastAPI / Flask, and Vue / React frontend projects.
 
-Spring Boot / Java、Node.js / TypeScript、Python（Django / FastAPI / Flask）、前端 Vue / React 等。
+## Notes
 
-## 注意事项
-
-- 改造前必须获得用户对保留/删除方案的书面确认；
-- 不确定的模块不会擅自删除；
-- 改造完成后会运行构建、测试、启动验证，并报告结果。
+- The agent must receive written user confirmation for the keep/remove plan before transformation.
+- Uncertain modules are not deleted without confirmation.
+- After transformation, the agent runs build, test, startup, or equivalent verification and reports the result.
